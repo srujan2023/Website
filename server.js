@@ -1,25 +1,23 @@
-const express = require("express");
+const express = require('express')
 const app = express();
+const connectDB = require('./config/db')
+const dotenv = require('dotenv')
+dotenv.config();
 
-// BookRouter File Import Code
-app.use("/api/books",require("./routes/bookRouter"));
 
-//MangoDB import Code
-const connectDB = require("./config/db");
-connectDB();
+const PORT = process.env.PORT;
 
-//Json forment Code
-app.use(express.json());
+connectDB()
 
+app.use(express.json())
+
+app.get('/',(req,res) =>{
+    res.json({Message:"Server is running"})
+})
+
+app.use('/api/blog/articles',require('./routes/articleRoutes'))
+
+app.listen(PORT,()=>{
+    console.log(`Server is running on port ${PORT}`);
     
-//Main Api Page
-app.get("/",(req,res)=>{
-    res.json({message:"Api server is runing"})
- });
-
-
-app.listen(5000,()=>{
-      console.log("server is runing is port 5000");
-});
-
-
+})
